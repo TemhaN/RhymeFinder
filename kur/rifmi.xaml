@@ -1,0 +1,191 @@
+﻿<Page x:Class="kur.rifmi"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:kur"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      mc:Ignorable="d" 
+      d:DesignHeight="550" d:DesignWidth="800"
+      Title="rifmi"
+      FontFamily="Segoe UI">
+    <Grid >
+        <Border Width="800" Height="430" 
+                CornerRadius="30" 
+                Background="White"
+                BorderThickness="0"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+            <Grid Margin="40">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" 
+                           Text="Поиск рифм" 
+                           FontSize="24" 
+                           FontWeight="SemiBold" 
+                           Foreground="#333333"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,10"/>
+
+                <!-- Input Section -->
+                <StackPanel Grid.Row="0" 
+                            Orientation="Horizontal" 
+                            HorizontalAlignment="Left" 
+                            Margin="0,30,0,20">
+                    <StackPanel Margin="0,0,20,0">
+                        <TextBlock Text="Слово" Foreground="#555555" Margin="5,0"/>
+                        <ui:TextBox x:Name="txtWordSearch" 
+                                    PlaceholderText="Введите слово" 
+                                    Width="150" 
+                                    Margin="0,5,0,0"
+                                    FontSize="14"
+                                    BorderBrush="#DDDDDD"
+                                    BorderThickness="1.5"
+                                    Padding="12,10"
+                                    TextChanged="TxtWordSearch_TextChanged">
+                            <ui:TextBox.Icon>
+                                <ui:SymbolIcon Symbol="Search24" Foreground="#8A5CF5"/>
+                            </ui:TextBox.Icon>
+                        </ui:TextBox>
+                        <ListBox x:Name="lbWordResults" 
+                                 DisplayMemberPath="Word" 
+                                 SelectedValuePath="Id" 
+                                 Height="100" 
+                                 Width="150"
+                                 Visibility="Collapsed" 
+                                 SelectionChanged="LbWordResults_SelectionChanged"
+                                 Background="White"
+                                 BorderBrush="#DDDDDD"
+                                 BorderThickness="1.5"
+                                 Margin="0,5,0,0"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,20,0">
+                        <TextBlock Text="Рифма" Foreground="#555555" Margin="5,0"/>
+                        <ui:TextBox x:Name="txtRhymeSearch" 
+                                    PlaceholderText="Введите рифму" 
+                                    Width="150" 
+                                    Margin="0,5,0,0"
+                                    FontSize="14"
+                                    BorderBrush="#DDDDDD"
+                                    BorderThickness="1.5"
+                                    Padding="12,10"
+                                    TextChanged="TxtRhymeSearch_TextChanged">
+                            <ui:TextBox.Icon>
+                                <ui:SymbolIcon Symbol="Search24" Foreground="#8A5CF5"/>
+                            </ui:TextBox.Icon>
+                        </ui:TextBox>
+                        <ListBox x:Name="lbRhymeResults" 
+                                 DisplayMemberPath="Word" 
+                                 SelectedValuePath="Id" 
+                                 Height="100" 
+                                 Width="150"
+                                 Visibility="Collapsed" 
+                                 SelectionChanged="LbRhymeResults_SelectionChanged"
+                                 Background="White"
+                                 BorderBrush="#DDDDDD"
+                                 BorderThickness="1.5"
+                                 Margin="0,5,0,0"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,20,0">
+                        <TextBlock Text="Тип рифмы" Foreground="#555555" Margin="5,0"/>
+                        <ComboBox x:Name="cmbRhymeType" 
+                                  DisplayMemberPath="RhymeName" 
+                                  SelectedValuePath="Id"
+                                  Width="150"
+                                  Margin="0,5,0,0"
+                                  FontSize="14"
+                                  Background="White"
+                                  BorderBrush="#DDDDDD"
+                                  BorderThickness="1.5"
+                                  Padding="12,10"/>
+                    </StackPanel>
+                    <ui:Button Content="Добавить рифму" 
+                               Width="150"
+                               Height="40"
+                               Appearance="Primary"
+                               Background="#8A5CF5"
+                               Foreground="White"
+                               CornerRadius="20"
+                               FontWeight="SemiBold"
+                               FontSize="14"
+                               VerticalAlignment="Bottom"
+                               Click="BtnAddRhyme_Click"/>
+                </StackPanel>
+
+                <!-- DataGrid -->
+                <DataGrid Grid.Row="1" 
+                          x:Name="dgRhymes" 
+                          AutoGenerateColumns="False" 
+                          IsReadOnly="True" 
+                          Margin="0,0,0,20"
+                          SelectionMode="Single"
+                          SelectionChanged="DgRhymes_SelectionChanged">
+                    <DataGrid.Resources>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="#8A5CF5"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Padding" Value="10"/>
+                        </Style>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Foreground" Value="#333333"/>
+                            <Setter Property="FontFamily" Value="Segoe UI"/>
+                            <Setter Property="Padding" Value="10"/>
+                        </Style>
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Слово" Binding="{Binding Word}" Width="*"/>
+                        <DataGridTextColumn Header="Рифма" Binding="{Binding Rhyme}" Width="*"/>
+                        <DataGridTextColumn Header="Тип рифмы" Binding="{Binding RhymeType}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Footer -->
+                <StackPanel Grid.Row="2" 
+                            Orientation="Horizontal" 
+                            HorizontalAlignment="Right">
+                    <TextBlock Text="Выбранная рифма:" 
+                               Foreground="#555555" 
+                               VerticalAlignment="Center"
+                               Margin="0,0,10,0"/>
+                    <ui:TextBox x:Name="txtSelectedRhyme" 
+                                IsReadOnly="True" 
+                                Width="200" 
+                                Margin="0,0,10,0"
+                                FontSize="14"
+                                BorderBrush="#DDDDDD"
+                                BorderThickness="1.5"
+                                Padding="12,10"/>
+                    <ui:Button Content="Вывод в Word" 
+                               Width="120"
+                               Height="40"
+                               Appearance="Secondary"
+                               Foreground="#8A5CF5"
+                               BorderBrush="#8A5CF5"
+                               CornerRadius="20"
+                               FontWeight="SemiBold"
+                               FontSize="13"
+                               Margin="0,0,10,0"
+                               Click="BtnExportRhyme_Click"/>
+                    <ui:Button Content="Удалить рифму" 
+                               Width="150"
+                               Height="40"
+                               Appearance="Secondary"
+                               Foreground="#8A5CF5"
+                               BorderBrush="#8A5CF5"
+                               CornerRadius="20"
+                               FontWeight="SemiBold"
+                               FontSize="13"
+                               Click="BtnDeleteRhyme_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>
